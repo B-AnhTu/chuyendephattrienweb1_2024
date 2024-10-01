@@ -29,6 +29,12 @@ class UserModel extends BaseModel {
         $sql = 'SELECT * FROM users WHERE name = "' . $userName . '" AND password = "'.$md5Password.'"';
 
         $user = $this->select($sql);
+
+        // If user found, store user data in session
+        if (!empty($user)) {
+            $_SESSION['current_user'] = $user[0]; // Store user data in session
+            $_SESSION['user_id'] = $user[0]['id']; // Store the user id
+        }
         return $user;
     }
 
@@ -44,19 +50,31 @@ class UserModel extends BaseModel {
     }
 
     /**
-     * Update user
+     * Update user (improved)
      * @param $input
      * @return mixed
      */
     public function updateUser($input) {
-        $sql = 'UPDATE users SET 
-                 name = "' . mysqli_real_escape_string(self::$_connection, $input['name']) .'", 
-                 password="'. md5($input['password']) .'"
-                WHERE id = ' . $input['id'];
-
-        $user = $this->update($sql);
-
-        return $user;
+        // Prepare the SQL query
+        $stmt = self::$_connection->prepare('UPDATE users SET name = ?, password = ? WHERE id = ?');
+    
+        // Escape the name and hash the password
+        $name = mysqli_real_escape_string(self::$_connection, $input['name']);
+        $password = md5($input['password']);
+        $id = intval($input['id']);
+    
+        // Bind parameters
+        $stmt->bind_param('ssi', $name, $password, $id);
+    
+        // Execute the query
+        $stmt->execute();
+    
+        // Check if the query was successful
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

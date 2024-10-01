@@ -1,60 +1,56 @@
 <?php
+session_start();
 require_once 'models/UserModel.php';
 $userModel = new UserModel();
 
-$user = NULL; //Add new user
+$user = NULL; // Khởi tạo người dùng
 $id = NULL;
 
 if (!empty($_GET['id'])) {
-    $id = $_GET['id'];
-    $user = $userModel->findUserById($id);//Update existing user
+    $id = base64_decode($_GET['id']); // Giải mã ID
+    $user = $userModel->findUserById($id); // Tìm người dùng theo ID
 }
-
-
-if (!empty($_POST['submit'])) {
-
-    if (!empty($id)) {
-        $userModel->updateUser($_POST);
-    } else {
-        $userModel->insertUser($_POST);
-    }
-    header('location: list_users.php');
-}
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User form</title>
+    <title>User Profile</title>
     <?php include 'views/meta.php' ?>
 </head>
 <body>
 <?php include 'views/header.php'?>
 <div class="container">
 
-    <?php if ($user || empty($id)) { ?>
+    <?php if ($user && !empty($user[0])) { ?>
         <div class="alert alert-warning" role="alert">
-            User profile
+            User Profile
         </div>
-        <form method="POST">
-            <input type="hidden" name="id" value="<?php echo $id ?>">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <span><?php if (!empty($user[0]['name'])) echo $user[0]['name'] ?></span>
-            </div>
-            <div class="form-group">
-                <label for="password">Fullname</label>
-                <span><?php if (!empty($user[0]['name'])) echo $user[0]['fullname'] ?></span>
-            </div>
-            <div class="form-group">
-                <label for="password">Email</label>
-                <span><?php if (!empty($user[0]['name'])) echo $user[0]['email'] ?></span>
-            </div>
-        </form>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <span><?php echo htmlspecialchars($user[0]['name']); ?></span>
+        </div>
+        <div class="form-group">
+            <label for="fullname">Fullname:</label>
+            <span><?php echo htmlspecialchars($user[0]['fullname']); ?></span>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <span><?php echo htmlspecialchars($user[0]['email']); ?></span>
+        </div>
+        
+        <div class="form-group">
+            <label for="type">Type:</label>
+            <span><?php echo htmlspecialchars($user[0]['type']); ?></span>
+        </div>
+
+        <a href="form_user.php?id=<?php echo base64_encode($user[0]['id']); ?>" class="btn btn-primary">Edit User</a>
+        <a href="list_users.php" class="btn btn-secondary">Back to Users List</a>
+        
     <?php } else { ?>
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-danger" role="alert">
             User not found!
         </div>
+        <a href="list_users.php" class="btn btn-secondary">Back to Users List</a>
     <?php } ?>
 </div>
 </body>
