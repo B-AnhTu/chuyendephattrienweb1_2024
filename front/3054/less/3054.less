@@ -1,0 +1,193 @@
+@background-color: #1b2cc2;
+@background-color-copyright: #000;
+@background-image-color: #003366;
+@btn-background-color: transparent;
+@btn-background-color-hover: #fff;
+@font-color: #fff;
+@font-color-hover: #666;
+@btn-color: #fff;
+@btn-color-hover: #666;
+@icon-color: #f7a5b1;
+@footer-color: #003366;
+
+
+// Khai báo size cho các thành phần
+@footer-padding: 50px;
+@size-padding: 30px;
+@size-margin: 50px;
+@size-font: 1rem;
+@size-font-icon: 1em;
+@border-radius: 5px;
+@padding-horizontal: 15px;
+@padding-vertical: 10px;
+@container-padding: 10px;
+@text-margin-top: 20px;
+
+// Tạo mixin cho các thẻ
+.title-header {
+    letter-spacing: 1px;
+    font-size: @size-font;
+    margin: 0 0 1.2em;
+    color: @font-color;
+    font-weight: 700;
+}
+
+.modify-margin {
+    margin-top: @size-margin;
+    margin-bottom: @size-margin;
+}
+
+.modify-padding {
+    padding-top: @size-padding;
+    padding-bottom: @size-padding;
+}
+
+.fa-chevron-right {
+    color: @font-color;
+    padding-right: 20px;
+}
+
+.normal-font {
+    font-weight: normal;
+}
+
+.type-3054 {
+    .modify-margin;
+
+    .pross1 {
+        background-color: @background-color;
+        .modify-padding;
+    }
+
+    .img-container {
+        background: @background-image-color url(../images/small-footer.jpg) center no-repeat;
+        background-size: cover;
+    }
+
+    .col-5 {
+        .text-wrapper {
+            margin-bottom: 0;
+            .text-title {
+                color: @font-color;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .col-2 {
+        a {
+            background-color: @btn-background-color;
+            text-decoration: none;
+            color: @btn-color;
+            padding: @padding-vertical @padding-horizontal;
+            border: 2px solid @btn-color;
+            border-radius: @border-radius;
+            .fa-chevron-right;
+            .normal-font;
+        }
+        a:hover {
+            background-color: @btn-color;
+            color: @font-color-hover;
+            .fa-chevron-right {
+                color: @font-color-hover;
+            }
+        }
+    }
+
+    .pross2 {
+        background-color: @footer-color;
+        color: @font-color;
+        padding: @footer-padding 0;
+
+        .footer-content {
+            padding: 0 @container-padding;
+        }
+
+        .logo img {
+            height: auto !important;
+            max-width: 100%;
+        }
+
+        .text {
+            margin-top: @text-margin-top;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            .menu-item {
+                margin-top: 10px;
+                .menu-link {
+                    color: @font-color;
+                    text-decoration: none;
+                    .normal-font;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        // .second-title, .third-title, .last-title {
+        //     .title-header;
+        // }
+
+        .third-title {
+            .text-contact {
+                .normal-font;
+                .fa {
+                    color: @icon-color;
+                    font-size: @size-font;
+                }
+                span::before {
+                    margin-right: calc(@size-margin / 5);
+                }
+            }
+        }
+
+        .last-title {
+            .menu-link {
+                text-decoration: none;
+                color: @font-color;
+                .normal-font;
+            }
+            span {
+                font-size: calc(@size-font-icon * 2);
+                margin-right: calc(@size-margin / 5);
+            }
+        }
+    }
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+        .col-5, .col-2, .col-4{
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .col-2 {
+            display: flex;
+            justify-content: center; // Căn giữa theo chiều ngang
+            align-items: center; // Căn giữa theo chiều dọc
+            a {
+                display: inline-block; // Đảm bảo thẻ a là khối nội tuyến để căn giữa
+            }
+        }
+    }
+
+    .pross3 {
+        background-color: @background-color-copyright;
+        .footer-copyright {
+            color: @font-color;
+            font-size: .8125rem;
+            white-space: nowrap;
+            .footer-copyright__container {
+                margin: 0 auto;
+                padding-top: 2.5rem;
+                padding-bottom: 2.5rem;
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+    }
+}
+
